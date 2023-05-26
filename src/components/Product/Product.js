@@ -1,8 +1,7 @@
 import styles from './Product.module.scss';
-
 import Button from '../Button/Button';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ProductImage from '../ProductImage/ProductImage';
 import ProductOptions from '../ProductOptions/ProductOptions';
 
@@ -13,10 +12,10 @@ const Product = props => {
 
   
 
-  const getPrice = () => {
+  const getPrice = useMemo(() => {
     const size = props.sizes.find(size => size.name === currentSize)
     return (props.basePrice + size.additionalPrice)
-  }
+  }, [currentSize, props]);
 
 
   return (
@@ -25,7 +24,7 @@ const Product = props => {
       <div>
         <header>
           <h2 className={styles.name}>{props.title}</h2>
-          <span className={styles.price}>Price: {getPrice()}$</span>
+          <span className={styles.price}>Price: {getPrice}$</span>
         </header>
         <form>
           <ProductOptions 
@@ -36,7 +35,7 @@ const Product = props => {
           colors={props.colors}
           sizes={props.sizes}/>
       
-          <Button className={styles.button} name={props.title} size={currentSize} color={currentColor} price={getPrice()}>
+          <Button className={styles.button} name={props.title} size={currentSize} color={currentColor} price={getPrice}>
             <span className="fa fa-shopping-cart" />
           </Button>
         </form>
